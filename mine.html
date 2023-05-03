@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>小马之家 - 我的照片</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<script type="text/javascript">
+		function sortPhotosByDate() {
+			var photos = document.getElementsByClassName('photo');
+			var photoList = [];
+
+			for (var i = 0; i < photos.length; i++) {
+				var photo = photos[i];
+				var dateStr = photo.getAttribute('data-date');
+				var date = new Date(dateStr);
+
+				if (!isNaN(date.getTime())) {
+					photoList.push({
+						element: photo,
+						date: date
+					});
+				}
+			}
+
+			photoList.sort(function(a, b) {
+				return b.date - a.date;
+			});
+
+			var photoContainer = document.getElementById('photo-container');
+			for (var i = 0; i < photoList.length; i++) {
+				photoContainer.appendChild(photoList[i].element);
+			}
+		}
+	</script>
+</head>
+<body onload="sortPhotosByDate()">
+	<header>
+		<h1>小马之家</h1>
+		<nav>
+			<ul>
+				<li><a href="index.html">首页</a></li>
+				<li><a href="upload.html">上传照片</a></li>
+				<li><a href="mine.html">我的照片</a></li>
+			</ul>
+		</nav>
+	</header>
+	<main>
+		<h2>我的照片</h2>
+		<div id="photo-container">
+			<img class="photo" src="photo_1.jpg" alt="photo 1" data-date="2021-01-01">
+		</div>
+	</main>
+	<footer>
+		<p>&copy; 2023 小马之家 | 版权所有.</p>
+	</footer>
+
+	<script type="text/javascript">
+		function previewPhoto(event) {
+			var input = event.target;
+			var reader = new FileReader();
+
+			reader.onload = function() {
+				var photoPreview = document.getElementById("photo-preview");
+				photoPreview.src = reader.result;
+			};
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	</script>
+</body>
+</html>
